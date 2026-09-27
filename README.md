@@ -59,7 +59,7 @@ app                     <-- version controlled app
 │   ├── NOTES.md
 │   ├── scripts         <-- scripts to create, build, ... vivado project
 │   └── src             <-- hardware platform source files
-├── vhdl                <-- hardware application source files
+├── hdl                 <-- hardware application source files
 │   └── src
 └── xilinx_env.tcl      <-- project environment settings mapped to tcl variables
 ├── logs                <- generated logs from create/build scripts
