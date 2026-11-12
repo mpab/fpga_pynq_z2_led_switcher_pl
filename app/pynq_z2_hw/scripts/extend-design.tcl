@@ -12,6 +12,8 @@ set btn [ create_bd_port -dir I -from 3 -to 0 btn ]
 connect_bd_net -net btn_0_1 [get_bd_ports btn] [get_bd_pins top_0/btn]
 set led [ create_bd_port -dir O -from 3 -to 0 led ]
 connect_bd_net -net top_0_led [get_bd_pins top_0/led] [get_bd_ports led]
+connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins top_0/clk]
+connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins top_0/reset_n]
 # Customization END
 
 save_bd_design

@@ -11,11 +11,14 @@ Demonstrates the basics of creating a project using scripting.
 The I/O connections are hardwired in the FPGA project.  
 Once deployed, pressing a button on the PYNQ-Z2 board will light the corresponding LED.
 
+Four buttons select four options, indicated by the corresponding LED.
+The selected LED remains lit after the button is released.
+
 To understand how this works - start by reading the project [documentation](./app/docs/docs.md).  
 
 ## Recommended Folder Structure
 
-All version-controlled assets should be checked out in an "app" sub-folder.  
+All version-controlled assets are checked out in an "app" sub-folder.  
 Projects are then created parallel to this folder via scripts.  
 Generated artifacts are not version-controlled.
 
@@ -39,7 +42,7 @@ Generated artifacts are not version-controlled.
 ./app/pynq_z2_fw/scripts/cp-boot-bin.sh /d
 
 # eject SD card, insert into device and power on
-# press push-buttons
+# press push-buttons, see LEDs light up, question life-choices...
 ```
 
 ## Manifest
