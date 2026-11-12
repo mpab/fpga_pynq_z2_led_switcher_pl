@@ -10,27 +10,54 @@ module top (
     output [3:0] led
 );
   // one-hot button/LED patterns
-  localparam P1 = 4'b0001;
-  localparam P2 = 4'b0010;
-  localparam P3 = 4'b0100;
-  localparam P4 = 4'b1000;
-  reg [3:0] latch;  // holds valid button presses
+  localparam BOFF = 4'b0000;
+  localparam B1   = 4'b0001;
+  localparam B2   = 4'b0010;
+  localparam B3   = 4'b0100;
+  localparam B4   = 4'b1000;
 
-  // strictly speaking, edge triggers for each button should be added, but meh...
+  // debounce 'queue'
+  reg [3:0] btnq0;
+  reg [3:0] btnq1;
+  reg [3:0] btnq2;
+  reg [3:0] btnq3;
+
+  // last valid button press/current LED pattern
+  reg [3:0] latch;
+  assign led = latch;
+
+  // crude debounce
   always @(posedge clk or negedge reset_n) begin
     if (~reset_n) begin
-      latch <= P1;  // reset_n == 0: default pattern
+      btnq0 <= BOFF;
+      btnq1 <= BOFF;
+      btnq2 <= BOFF;
+      btnq3 <= BOFF;
     end else begin
-      // Detect exactly one button high.
-      case (btn)
-        P1: latch <= P1;
-        P2: latch <= P2;
-        P3: latch <= P3;
-        P4: latch <= P4;
-        default:  /* btn == 0000 or not one-hot: latch unchanged */;
-      endcase
+      btnq0 <= btnq1;
+      btnq1 <= btnq2;
+      btnq2 <= btnq3;
+      btnq3 <= btn;
     end
   end
 
-  assign led = latch;
+  // button press handler
+  always @(posedge clk or negedge reset_n) begin
+    if (~reset_n) begin
+      latch <= B1;  // reset_n == 0: default pattern
+    end else begin
+      // detect exactly one debounced button press and only react to changes
+      if (btnq0 == btnq1 == btnq2 == btnq3) begin
+        if ((btnq0 == B1) && (B1 != latch)) begin
+          latch <= B1;
+        end else if ((btnq0 == B2) && (B2 != latch)) begin
+          latch <= B2;
+        end else if ((btnq0 == B3) && (B3 != latch)) begin
+          latch <= B3;
+        end else if ((btnq0 == B4) && (B4 != latch)) begin
+          latch <= B4;
+        end
+      end
+    end
+  end
 endmodule
